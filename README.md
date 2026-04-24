@@ -1,6 +1,5 @@
 # oyd-exercise-1-1-
-The file below is a complete Terraform configuration. You did not write it. Your job is to run it and understand exactly what it does — without applying it.
-Aquí tienes el bloque listo para pegar en tu `README.md`:
+Terraform configuration exercise
 
 
 ## Task 1 — Initialize and Validate
@@ -18,12 +17,12 @@ El comando `terraform validate` verificó la sintaxis y estructura del archivo `
 - No hay errores de sintaxis en el archivo
 - Los tipos de recursos utilizados son válidos para el provider de AWS
 - La configuración está lista para ejecutar `terraform plan`
-```
+
+
 ## Task 2 — Read the Plan
 
 ### Full `terraform plan` output
-
-
+```
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
 following symbols:
   + create
@@ -68,7 +67,7 @@ Terraform will perform the following actions:
     }
 
 Plan: 1 to add, 0 to change, 0 to destroy.
-
+```
 
 ### Preguntas
 
@@ -88,7 +87,7 @@ El atributo `arn` está marcado como `(known after apply)`. Terraform no puede c
 
 ### Diff del bloque `aws_s3_bucket` tras agregar el tag `Owner`
 
-```hcl
+```
   # aws_s3_bucket.exercise will be created
   + resource "aws_s3_bucket" "exercise" {
       + tags                        = {
@@ -105,6 +104,7 @@ El atributo `arn` está marcado como `(known after apply)`. Terraform no puede c
 
 Plan: 1 to add, 0 to change, 0 to destroy.
 
+```
 
 ### Preguntas
 
@@ -115,7 +115,6 @@ Terraform propone **crearlo directamente con el nuevo tag incluido** (`+ create`
 **2. ¿Por qué importa esa distinción?**
 
 La distinción entre **update in-place** (`~`) y **destroy + recreate** (`-/+`) es crítica en entornos de producción. Cuando Terraform destruye y recrea un recurso, **todos los datos que contenía se pierden permanentemente**. En el caso de un bucket S3, eso significaría perder todos los archivos almacenados. En cambio, una actualización in-place solo modifica la propiedad indicada sin interrumpir el recurso ni sus datos. Por eso Terraform siempre señala explícitamente cuándo una acción es destructiva, para que el equipo pueda tomar una decisión informada antes de ejecutar `apply`.
-
 
 ## Task 4 — State Reasoning
 
@@ -140,4 +139,3 @@ El archivo `terraform.tfstate` **no existe** en el directorio porque nunca se ha
 - **`terraform apply`** es la operación de escritura. Es el único comando que crea los recursos reales en AWS y, como consecuencia, genera o actualiza el archivo `terraform.tfstate` para registrar lo que existe.
 
 La ausencia del `.tfstate` demuestra que **el plan y el estado son dos cosas separadas**: el plan es una *predicción* de lo que pasaría, mientras que el estado es un *registro* de lo que realmente existe. Sin apply no hay recursos reales, y sin recursos reales no hay estado que registrar.
-```
