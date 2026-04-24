@@ -19,7 +19,8 @@ resource "aws_s3_bucket" "exercise" {
 
 
  tags = {
-   Environment = "dev"
-   ManagedBy   = "terraform"
- }
+    Environment = "dev"
+    ManagedBy   = "terraform"
+    Owner       = "Isabel Paiz"
+  }
 }
